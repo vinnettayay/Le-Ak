@@ -5,12 +5,13 @@ public class Interactable : MonoBehaviour, IInteractable
 {
     [SerializeField] private string displayName = "Interact";
     [SerializeField] private bool isEnabled = true;
+    [SerializeField] private bool ignoreInteraction = false;
     [SerializeField] private UnityEvent onInteract;
     public string DisplayName => displayName;
+    public bool IgnoreInteraction => ignoreInteraction;
     //public bool CanInteract() => isEnabled;
 
     private Outline outline;
-
 
     //AltarInteraction
     private Altar altar;
@@ -42,5 +43,17 @@ public class Interactable : MonoBehaviour, IInteractable
     public void OnFocusLost()
     {
         if (outline != null) outline.enabled = false;
+    }
+    public void SetDisplayName(string text)
+    {
+        displayName = text;
+    }
+    public void SetIgnoreInteraction(bool value)
+    {
+        ignoreInteraction = value;
+    }
+    public void SetInteractable(bool value)
+    {
+        isEnabled = value;
     }
 }

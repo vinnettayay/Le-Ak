@@ -1,11 +1,21 @@
 using UnityEngine;
 
-public class Altar : MonoBehaviour
+public class Altar : MonoBehaviour, IHoldInteractable
 {
+    [Header("Offering")]
     [SerializeField] private Item requiredItem;
     [SerializeField] private Transform placePoint;
 
+    [Header("HoldInteraction")]
+    [SerializeField] private float holdDuration = 3f;
+    public float HoldDuration => holdDuration;
+    public bool ShouldHold => offeringPlaced;
+    public bool CanHold => !prayCompleted;
+
     private Inventory inventory;
+    private GameObject spawnedOffering;
+    private bool offeringPlaced;
+    private bool prayCompleted = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -13,13 +23,35 @@ public class Altar : MonoBehaviour
     }
     public bool CanPlace()
     {
+        if (offeringPlaced) return true;
+
         return inventory.HasItem(requiredItem);
     }
 
     public void Place()
     {
+        if (offeringPlaced) return;
         if (!inventory.RemoveItem(requiredItem)) return;
 
-        Instantiate(requiredItem.prefab, placePoint.position, placePoint.rotation);
+        spawnedOffering = Instantiate(requiredItem.prefab, placePoint.position, placePoint.rotation);
+        offeringPlaced = true;
+        GetComponent<Interactable>().SetDisplayName("Pray");
+        FindFirstObjectByType<PlayerInteractor>()?.RefreshPrompt();
+
+        Interactable interactable = spawnedOffering.GetComponent<Interactable>();
+        if (interactable != null) interactable.SetIgnoreInteraction(true);
+    }
+    public void HoldCompleted()
+    {
+        if (prayCompleted) return;
+
+        Debug.Log("Pray Finished");
+        prayCompleted = true;
+
+        //Safezone Activated, System Finished
+        Interactable interactable = GetComponent<Interactable>();
+        if (interactable != null) interactable.SetInteractable(false);
+
+
     }
 }
