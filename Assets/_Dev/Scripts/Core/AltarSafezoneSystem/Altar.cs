@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Altar : MonoBehaviour, IHoldInteractable
@@ -8,6 +9,7 @@ public class Altar : MonoBehaviour, IHoldInteractable
 
     [Header("HoldInteraction")]
     [SerializeField] private float holdDuration = 3f;
+    public BoxCollider safezoneArea;
     public float HoldDuration => holdDuration;
     public bool ShouldHold => offeringPlaced;
     public bool CanHold => !prayCompleted;
@@ -16,10 +18,15 @@ public class Altar : MonoBehaviour, IHoldInteractable
     private GameObject spawnedOffering;
     private bool offeringPlaced;
     private bool prayCompleted = false;
+    private Collider thisColl;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        inventory = FindFirstObjectByType<Inventory>();   
+        inventory = FindFirstObjectByType<Inventory>();
+        safezoneArea.enabled = false; 
+        thisColl = GetComponent<Collider>();
+        thisColl.enabled = true;
+        
     }
     public bool CanPlace()
     {
@@ -47,6 +54,7 @@ public class Altar : MonoBehaviour, IHoldInteractable
 
         Debug.Log("Pray Finished");
         prayCompleted = true;
+        safezoneArea.enabled = true;
 
         //Safezone Activated, System Finished
         Interactable interactable = GetComponent<Interactable>();

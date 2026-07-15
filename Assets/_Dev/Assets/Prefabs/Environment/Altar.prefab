@@ -129,6 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
   displayName: Place
   isEnabled: 1
+  ignoreInteraction: 0
   onInteract:
     m_PersistentCalls:
       m_Calls:
@@ -158,6 +159,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AltarInteractable
   requiredItem: {fileID: 11400000, guid: c83478c8117c19d458da837711780fc3, type: 2}
   placePoint: {fileID: 7316856765764984152}
+  holdDuration: 3
+  safezoneArea: {fileID: 8032760028469808644}
 --- !u!1 &6700084055022404270
 GameObject:
   m_ObjectHideFlags: 0
