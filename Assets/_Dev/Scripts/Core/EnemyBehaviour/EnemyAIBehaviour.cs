@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class EnemyAIBehaviour : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class EnemyAIBehaviour : MonoBehaviour
         Patrol,
         Chase,
         Search,
-        Attack
+        Attack,
+        Stunned
     }
 
     [Header("References")]
@@ -31,6 +33,9 @@ public class EnemyAIBehaviour : MonoBehaviour
     [Header("Search")]
     [SerializeField] private float searchDuration = 5f;
 
+    [Header("Stunned")]
+    [SerializeField] private float stunDuration = 3f;
+
     [SerializeField]
     private EnemyState enemyState;
     private Vector3 searchPos;
@@ -39,8 +44,10 @@ public class EnemyAIBehaviour : MonoBehaviour
     private bool alreadyAttacked;
     private float patrolTimer;
     private float searchTimer;
+    private Coroutine stunRoutine;
 
     public EnemyState CurrentState => enemyState;
+    public bool IsChasing => enemyState == EnemyState.Chase || enemyState == EnemyState.Attack;
 
     private void Awake() 
     {
@@ -56,6 +63,7 @@ public class EnemyAIBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (enemyState == EnemyState.Stunned) return;
         float distance = Vector3.Distance(transform.position, player.position);
 
         switch (enemyState)
@@ -181,15 +189,34 @@ public class EnemyAIBehaviour : MonoBehaviour
         }
     }
     public void EnterSafeZone(Vector3 lastPos)
-    {
-        Debug.Log("CurrentState : " + enemyState);
-        Debug.Log("Hasil : " + (enemyState != EnemyState.Chase && enemyState != EnemyState.Attack));
-        
+    {        
         if (enemyState != EnemyState.Chase && enemyState != EnemyState.Attack) return;
 
-        Debug.Log("ChangeState TO Search");
         searchPos = lastPos;
         ChangeState(EnemyState.Search);
+    }
+    public void Stun()
+    {
+        Stun(stunDuration);
+    }
+    public void Stun(float duration)
+    {
+        if (stunRoutine != null) StopCoroutine(stunRoutine);
+        
+        stunRoutine = StartCoroutine(StunRoutine(duration));
+    }
+    private IEnumerator StunRoutine(float duration)
+    {
+        ChangeState(EnemyState.Stunned);
+
+        agent.ResetPath();
+        agent.isStopped = true;
+
+        yield return new WaitForSeconds(duration);
+
+        agent.isStopped = false;
+        ChangeState(EnemyState.Chase);
+        stunRoutine = null;
     }
 
     private void OnDrawGizmosSelected()
