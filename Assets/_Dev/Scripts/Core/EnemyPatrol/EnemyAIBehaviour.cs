@@ -22,7 +22,6 @@ public class EnemyAIBehaviour : MonoBehaviour
     
     [Header("Patrol")]
     [SerializeField] private float patrolRadius = 15f;
-    [SerializeField] private float patrolReachedDistance = 1.5f;
     [SerializeField] private float patrolDelayTime = 2f;
 
     [Header("Attack")]
@@ -32,7 +31,9 @@ public class EnemyAIBehaviour : MonoBehaviour
     [Header("Search")]
     [SerializeField] private float searchDuration = 5f;
 
+    [SerializeField]
     private EnemyState enemyState;
+    private Vector3 searchPos;
     private Vector3 patrolPoint;
     private bool patrolPointSet;
     private bool alreadyAttacked;
@@ -60,7 +61,7 @@ public class EnemyAIBehaviour : MonoBehaviour
         switch (enemyState)
         {
             case EnemyState.Patrol : 
-                if (detection.PlayerDetected)
+                if (detection.PlayerVisible)
                 {
                     ChangeState(EnemyState.Chase);
                     return;
@@ -69,12 +70,6 @@ public class EnemyAIBehaviour : MonoBehaviour
                 break;
 
             case EnemyState.Chase : 
-                if (!detection.PlayerDetected)
-                {
-                    ChangeState(EnemyState.Search);
-                    return;
-                }
-
                 if (distance <= attackRange)
                 {
                     ChangeState(EnemyState.Attack);
@@ -84,12 +79,6 @@ public class EnemyAIBehaviour : MonoBehaviour
                 break;
 
             case EnemyState.Attack : 
-                if (!detection.PlayerDetected)
-                {
-                    ChangeState(EnemyState.Search);
-                    return;
-                }
-
                 if (distance > attackRange)
                 {
                     ChangeState(EnemyState.Chase);
@@ -99,7 +88,8 @@ public class EnemyAIBehaviour : MonoBehaviour
                 break;
 
             case EnemyState.Search : 
-                if (detection.PlayerDetected)
+                
+                if (detection.PlayerVisible)
                 {
                     ChangeState(EnemyState.Chase);
                     return;
@@ -122,11 +112,11 @@ public class EnemyAIBehaviour : MonoBehaviour
                 searchTimer = 0f;
                 break;
         }
+        Debug.Log("CurrentState : " + enemyState);
     }
     private void Patrol()
     {
         agent.speed = patrolSpeed;
-
 
         if (!patrolPointSet)
         {
@@ -182,13 +172,24 @@ public class EnemyAIBehaviour : MonoBehaviour
     private void Search()
     {
         agent.speed = patrolSpeed;
-        agent.SetDestination(detection.PlayerLastPos);
+        agent.SetDestination(searchPos);
 
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             searchTimer += Time.deltaTime;
             if (searchTimer >= searchDuration) ChangeState(EnemyState.Patrol);
         }
+    }
+    public void EnterSafeZone(Vector3 lastPos)
+    {
+        Debug.Log("CurrentState : " + enemyState);
+        Debug.Log("Hasil : " + (enemyState != EnemyState.Chase && enemyState != EnemyState.Attack));
+        
+        if (enemyState != EnemyState.Chase && enemyState != EnemyState.Attack) return;
+
+        Debug.Log("ChangeState TO Search");
+        searchPos = lastPos;
+        ChangeState(EnemyState.Search);
     }
 
     private void OnDrawGizmosSelected()

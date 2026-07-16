@@ -15,39 +15,28 @@ public class EnemyDetection : MonoBehaviour
 
     [SerializeField] private LayerMask obstacleLayer;
 
-    public bool PlayerDetected { get; private set; }
+    public bool PlayerVisible;
     public Vector3 PlayerLastPos { get; private set; }
-
-    private float memoryTimer;
+    private PlayerSafezone playerSafezone;
 
     private void Awake() 
     {
         if (player == null) player = GameObject.FindGameObjectWithTag("Player").transform; 
+        playerSafezone = player.GetComponent<PlayerSafezone>();
     }    
     // Update is called once per frame
     void Update()
     {
-        bool canSee = CanSeePlayer();
 
-        if (canSee)
+        if (playerSafezone != null && playerSafezone.InsideSafezone)
         {
-            PlayerDetected = true;
-            PlayerLastPos = player.position;
+            PlayerVisible = false;
+            return;
+        }
 
-            memoryTimer = memoryDuration;
-        }
-        else
-        {
-            if (memoryTimer > 0)
-            {
-                memoryTimer -= Time.deltaTime;
-                PlayerDetected = true;
-            }
-            else
-            {
-                PlayerDetected = false;
-            }
-        }
+        PlayerVisible = CanSeePlayer();
+
+        if (PlayerVisible) PlayerLastPos = player.position;
     }
     public bool CanSeePlayer()
     {
@@ -62,7 +51,7 @@ public class EnemyDetection : MonoBehaviour
         if (angle > visionAngle * 0.5f) return false;
 
         Vector3 eye = transform.position + Vector3.up * 1.6f;
-        Vector3 target = player.position + Vector3.up * 1f;
+        Vector3 target = player.position + Vector3.up;
 
         direction = (target - eye).normalized;
         float rayDistance = Vector3.Distance(eye, target);
