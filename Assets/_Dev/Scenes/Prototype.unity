@@ -860,6 +860,7 @@ GameObject:
   - component: {fileID: 418399285}
   - component: {fileID: 418399286}
   - component: {fileID: 418399288}
+  - component: {fileID: 418399289}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -1059,6 +1060,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputManager
   inventoryUI: {fileID: 1553222023}
+--- !u!114 &418399289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 418399282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ca6dc1969efae740a3d7d7740b58afd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSafezone
+  InsideSafezone: 0
 --- !u!1 &429172898
 GameObject:
   m_ObjectHideFlags: 0
@@ -1275,11 +1289,14 @@ MonoBehaviour:
   detection: {fileID: 504515337}
   agent: {fileID: 504515330}
   player: {fileID: 418399283}
+  patrolSpeed: 3.5
+  chaseSpeed: 5.5
   patrolRadius: 15
-  patrolReachedDistance: 1.5
+  patrolDelayTime: 2
   attackRange: 2
   attackCooldown: 1.5
   searchDuration: 5
+  enemyState: 0
 --- !u!114 &504515337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1296,9 +1313,11 @@ MonoBehaviour:
   detectedRadius: 7
   visionDistance: 25
   visionAngle: 60
+  memoryDuration: 1.5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 128
+  PlayerVisible: 0
 --- !u!1 &705208609
 GameObject:
   m_ObjectHideFlags: 0
@@ -2916,6 +2935,11 @@ MonoBehaviour:
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!65 &1230077607 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 4599912452883268627, guid: 58d23e8d54883464d89885dfc5326c94, type: 3}
+  m_PrefabInstance: {fileID: 505889998373667807}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1292828511
 GameObject:
   m_ObjectHideFlags: 0
@@ -5551,6 +5575,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 973869540309055291, guid: 58d23e8d54883464d89885dfc5326c94, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4599912452883268627, guid: 58d23e8d54883464d89885dfc5326c94, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -5562,7 +5590,7 @@ PrefabInstance:
     - target: {fileID: 7729982703817360306, guid: 58d23e8d54883464d89885dfc5326c94, type: 3}
       propertyPath: safezoneArea
       value: 
-      objectReference: {fileID: 4390286980338086908}
+      objectReference: {fileID: 1230077607}
     - target: {fileID: 8199557306673429168, guid: 58d23e8d54883464d89885dfc5326c94, type: 3}
       propertyPath: m_LocalPosition.x
       value: -24.85
@@ -5608,11 +5636,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58d23e8d54883464d89885dfc5326c94, type: 3}
---- !u!65 &4390286980338086908 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 973869540309055291, guid: 58d23e8d54883464d89885dfc5326c94, type: 3}
-  m_PrefabInstance: {fileID: 505889998373667807}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5595453192918819065
 PrefabInstance:
   m_ObjectHideFlags: 0
