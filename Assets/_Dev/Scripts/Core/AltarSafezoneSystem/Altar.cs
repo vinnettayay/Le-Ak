@@ -55,6 +55,7 @@ public class Altar : MonoBehaviour, IHoldInteractable
         Debug.Log("Pray Finished");
         prayCompleted = true;
         safezoneArea.enabled = true;
+        safezoneArea.tag = "Safezone";
 
         //Safezone Activated, System Finished
         Interactable interactable = GetComponent<Interactable>();
