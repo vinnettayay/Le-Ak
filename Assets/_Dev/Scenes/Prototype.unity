@@ -1119,9 +1119,10 @@ GameObject:
   - component: {fileID: 504515332}
   - component: {fileID: 504515331}
   - component: {fileID: 504515330}
-  - component: {fileID: 504515335}
   - component: {fileID: 504515337}
   - component: {fileID: 504515336}
+  - component: {fileID: 504515339}
+  - component: {fileID: 504515338}
   m_Layer: 0
   m_Name: Leak
   m_TagString: Untagged
@@ -1247,33 +1248,6 @@ Transform:
   - {fileID: 873510425}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &504515335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 504515329}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9164b24320e04314583a879fc3079167, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAi
-  agent: {fileID: 504515330}
-  player: {fileID: 418399283}
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 4096
-  whatIsPlayer:
-    serializedVersion: 2
-    m_Bits: 64
-  walkPoint: {x: 0, y: 0, z: 0}
-  walkPointRange: 5
-  timeBetweenAttacks: 0.5
-  sightRange: 20
-  attackRange: 12
-  playerInSightRange: 0
-  playerInAttackRange: 0
 --- !u!114 &504515336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1296,6 +1270,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 1.5
   searchDuration: 5
+  stunDuration: 3
   enemyState: 0
 --- !u!114 &504515337
 MonoBehaviour:
@@ -1318,6 +1293,55 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   PlayerVisible: 0
+--- !u!114 &504515338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504515329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94e89fc1c952f6a43b4d67c82efd325c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpellInteractable
+  enemyAI: {fileID: 504515336}
+  interactable: {fileID: 504515339}
+  holdDuration: 4
+  stunDuration: 3
+  spellCooldown: 5
+--- !u!114 &504515339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504515329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad4a2d07bce416f48b9740509771c831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  displayName: Interact
+  isEnabled: 1
+  ignoreInteraction: 0
+  onInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 504515336}
+        m_TargetAssemblyTypeName: EnemyAIBehaviour, Assembly-CSharp
+        m_MethodName: Stun
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  outlineColor: {r: 1, g: 0.015686274, b: 0.029004289, a: 1}
+  outlineWidth: 15
 --- !u!1 &705208609
 GameObject:
   m_ObjectHideFlags: 0

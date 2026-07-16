@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerInteractor : MonoBehaviour
 {
     [SerializeField] private HoldInteractUI holdUI;
-    [SerializeField] private float radius = 2f;
+    [SerializeField] private float searchRadius = 7f;
     [SerializeField] private LayerMask interactableLayers;
     [SerializeField] private InteractPrompt prompt;
     private Collider[] buffer = new Collider[32];
@@ -26,35 +26,17 @@ public class PlayerInteractor : MonoBehaviour
 
         if (focusedHold != null && focusedHold.ShouldHold && focusedHold.CanHold)
         {
-            if (Input.GetKey(KeyCode.E))
-            {
-                holdTimer += Time.deltaTime;
-
-                holdUI.Show();
-                holdUI.SetProgress(holdTimer / focusedHold.HoldDuration);
-
-                if (holdTimer >= focusedHold.HoldDuration)
-                {
-                    focusedHold.HoldCompleted();
-                    holdTimer = 0;
-                    holdUI.Hide();
-                }
-            }
-            else
-            {
-                holdTimer = 0;
-                holdUI.Hide();   
-            }
+            HandleHoldInteraction();
             return;
         }
-        if (focused != null && Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             if (focused.CanInteract()) focused.Interact();
         }
     }
     private IInteractable FindNearestInteractable()
     {
-        int count = Physics.OverlapSphereNonAlloc(transform.position, radius, buffer, interactableLayers, QueryTriggerInteraction.Collide);
+        int count = Physics.OverlapSphereNonAlloc(transform.position, searchRadius, buffer, interactableLayers, QueryTriggerInteraction.Collide);
         IInteractable nearest = null;
         float bestDistSq = float.MaxValue;
 
@@ -62,16 +44,19 @@ public class PlayerInteractor : MonoBehaviour
         {
             Collider col = buffer[i];
             if (col == null) continue;
-            //IInteractable interactable = col.GetComponentInParent<IInteractable>();
 
-            Interactable interactableComponent = col.GetComponent<Interactable>();
-            if (interactableComponent != null && interactableComponent.IgnoreInteraction) continue;
-            IInteractable interactable = interactableComponent;
-
+            IInteractable interactable = col.GetComponentInParent<IInteractable>(); //THIS LINE
             if (interactable == null) continue;
+
+            Interactable interactableComponent = (interactable as MonoBehaviour).GetComponent<Interactable>();
+            if (interactableComponent != null && interactableComponent.IgnoreInteraction) continue;
+
+            // IInteractable interactable = interactableComponent;
+
+            // if (interactable == null) continue;
             if (!interactable.CanInteract()) continue;
 
-            float distSq = (col.transform.position - transform.position).sqrMagnitude;
+            float distSq = (transform.position - col.transform.position).sqrMagnitude;
             if (distSq < bestDistSq)
             {
                 bestDistSq = distSq;
@@ -80,13 +65,34 @@ public class PlayerInteractor : MonoBehaviour
         }
         return nearest;
     }
+    private void HandleHoldInteraction()
+    {
+        if (Input.GetKey(KeyCode.E))
+        {
+            holdTimer += Time.deltaTime;
+
+            holdUI.Show();
+            holdUI.SetProgress(holdTimer / focusedHold.HoldDuration);
+
+            if (holdTimer >= focusedHold.HoldDuration)
+            {
+                focusedHold.HoldCompleted();
+                holdTimer = 0;
+                holdUI.Hide();
+            }
+        }
+        else
+        {
+            holdTimer = 0;
+            holdUI.Hide();   
+        }
+    }
     private void UpdateFocus(IInteractable nearest)
     {
         if (ReferenceEquals(focused, nearest)) return;
         focused?.OnFocusLost();
-        focused = nearest;
-        
         holdTimer = 0;
+        focused = nearest;
 
         if (focused != null)
         {
@@ -109,4 +115,12 @@ public class PlayerInteractor : MonoBehaviour
             prompt.Show(focused);
         }
     }
+
+    #if UNITY_EDITOR
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, searchRadius);
+        }
+    #endif
 }
