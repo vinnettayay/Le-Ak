@@ -42,9 +42,11 @@ public class EnemyAIBehaviour : MonoBehaviour
     private Vector3 patrolPoint;
     private bool patrolPointSet;
     private bool alreadyAttacked;
+    private bool ignoreDetection;
     private float patrolTimer;
     private float searchTimer;
     private Coroutine stunRoutine;
+    private GameManager gameManager;
 
     public EnemyState CurrentState => enemyState;
     public bool IsChasing => enemyState == EnemyState.Chase || enemyState == EnemyState.Attack;
@@ -54,6 +56,8 @@ public class EnemyAIBehaviour : MonoBehaviour
         if (agent == null) agent = GetComponent<NavMeshAgent>();
         if (detection == null) detection = GetComponent<EnemyDetection>();
         if (player == null) player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        gameManager = FindFirstObjectByType<GameManager>();
     }
     void Start()
     {
@@ -64,7 +68,6 @@ public class EnemyAIBehaviour : MonoBehaviour
     void Update()
     {
         if (enemyState == EnemyState.Stunned) return;
-        float distance = Vector3.Distance(transform.position, player.position);
 
         switch (enemyState)
         {
@@ -78,26 +81,16 @@ public class EnemyAIBehaviour : MonoBehaviour
                 break;
 
             case EnemyState.Chase : 
-                if (distance <= attackRange)
-                {
-                    ChangeState(EnemyState.Attack);
-                    return;
-                }
                 Chase();
                 break;
 
             case EnemyState.Attack : 
-                if (distance > attackRange)
-                {
-                    ChangeState(EnemyState.Chase);
-                    return;
-                }
                 Attack();
                 break;
 
             case EnemyState.Search : 
                 
-                if (detection.PlayerVisible)
+                if (!ignoreDetection && detection.PlayerVisible)
                 {
                     ChangeState(EnemyState.Chase);
                     return;
@@ -158,20 +151,28 @@ public class EnemyAIBehaviour : MonoBehaviour
         agent.speed = chaseSpeed;
         agent.SetDestination(player.position);
     }
+    public void TriggerAttack()
+    {
+        if (enemyState == EnemyState.Attack) return;
+        if (enemyState == EnemyState.Stunned) return;
+        ChangeState(EnemyState.Attack);
+    }
     private void Attack()
     {
-        agent.SetDestination(transform.position);
+        agent.ResetPath();
 
         Vector3 lookPos = player.position;
         lookPos.y = transform.position.y;
         transform.LookAt(lookPos);
 
-        if (!alreadyAttacked)
+        if (alreadyAttacked) return;
+        alreadyAttacked = true;
+
+        if (gameManager != null)
         {
-            Debug.Log("Attack!");
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), attackCooldown);
+            gameManager.PlayerCaught(this);
         }
+        Invoke(nameof(ResetAttack), attackCooldown);
     }
     private void ResetAttack()
     {
@@ -218,7 +219,33 @@ public class EnemyAIBehaviour : MonoBehaviour
         ChangeState(EnemyState.Chase);
         stunRoutine = null;
     }
+    public void ResetEnemy(Vector3 position)
+    {
+        agent.ResetPath();
+        agent.isStopped = true;
 
+        agent.Warp(position);
+
+        alreadyAttacked = false;
+        patrolPointSet = false;
+
+        searchPos = Vector3.zero;
+        agent.isStopped = false;
+
+        ChangeState(EnemyState.Patrol);
+        DisableDetection(1f);
+    }
+    public void DisableDetection(float duration)
+    {
+        if (gameObject.activeInHierarchy) StartCoroutine(DetectionCooldown(duration));
+    }
+    private IEnumerator DetectionCooldown(float duration)
+    {
+        ignoreDetection = true;
+        detection.PlayerVisible = false;
+        yield return new WaitForSeconds(duration);
+        ignoreDetection = false;
+    }
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;

@@ -7,6 +7,9 @@ public class Altar : MonoBehaviour, IHoldInteractable
     [SerializeField] private Item requiredItem;
     [SerializeField] private Transform placePoint;
 
+    [Header("Checkpoint")]
+    [SerializeField] private Transform respawnPoint;
+
     [Header("HoldInteraction")]
     [SerializeField] private float holdDuration = 3f;
     public BoxCollider safezoneArea;
@@ -19,7 +22,6 @@ public class Altar : MonoBehaviour, IHoldInteractable
     private bool offeringPlaced;
     private bool prayCompleted = false;
     private Collider thisColl;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         inventory = FindFirstObjectByType<Inventory>();
@@ -57,10 +59,9 @@ public class Altar : MonoBehaviour, IHoldInteractable
         safezoneArea.enabled = true;
         safezoneArea.tag = "Safezone";
 
-        //Safezone Activated, System Finished
+        if (GameManager.Instance != null) GameManager.Instance.SetCheckpoint(respawnPoint);
+
         Interactable interactable = GetComponent<Interactable>();
         if (interactable != null) interactable.SetInteractable(false);
-
-
     }
 }
