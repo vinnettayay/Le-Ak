@@ -12,18 +12,18 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Transform uiInventoryParent;
 
     [Header("State")]
-    [Header("SerializeField")]
-    SerializedDictionary<string, GameObject> inventoryUI = new();
+    [SerializeField] private SerializedDictionary<string, GameObject> inventoryUI = new();
     public void AddUIItem(string inventoryId, Item item)
     {
         var itemUI = Instantiate(uiItemPrefab).GetComponent<ItemUI>();
         itemUI.transform.SetParent(uiInventoryParent, false);
         inventoryUI.Add(inventoryId, itemUI.gameObject);
-        itemUI.Initialize(inventoryId, item, inventory.DropItem);
+        itemUI.Initialize(inventoryId, item, inventory.UseItem);
     }
     public void RemoveUIItem(string inventoryId)
     {
-        var itemUI = inventoryUI.GetValueOrDefault(inventoryId);
+        if (!inventoryUI.ContainsKey(inventoryId)) return;
+        var itemUI = inventoryUI[inventoryId];
         inventoryUI.Remove(inventoryId);
         Destroy(itemUI);
     }

@@ -11,6 +11,12 @@ public class Inventory : MonoBehaviour
     [SerializeField] private InventoryUI ui;
     [SerializeField] private AudioSource audioSource;
 
+    [Header("Lantern")]
+    [SerializeField] private LanternController lantern;
+
+    [Header("Item")]
+    [SerializeField] private Item matchItem;
+
     [Header("Prefabs")]
     [SerializeField] private GameObject droppedItemPrefab;
 
@@ -26,15 +32,6 @@ public class Inventory : MonoBehaviour
         var inventoryId = Guid.NewGuid().ToString();
         inventory.Add(inventoryId, item);
         ui.AddUIItem(inventoryId, item);
-    }
-    public void DropItem(string inventoryId)
-    {
-        var droppedItem = Instantiate(droppedItemPrefab, transform.position, Quaternion.identity).GetComponent<DroppedItem>();
-        var item = inventory.GetValueOrDefault(inventoryId);
-        droppedItem.Initialize(item);
-        inventory.Remove(inventoryId);
-        ui.RemoveUIItem(inventoryId);
-        audioSource.PlayOneShot(dropItemAudio);
     }
     public void Pickup(Item item)
     {
@@ -53,6 +50,36 @@ public class Inventory : MonoBehaviour
             }
         }
         return false;
+    }
+    public void UseItem(string inventoryId)
+    {
+        Debug.Log("UseItem Called!");
+        if (!inventory.ContainsKey(inventoryId)) return;
+        
+        Item item = inventory[inventoryId];
+        if (item == matchItem)
+        {
+            if (lantern.NeedsRefill)
+            {
+                lantern.Refill();
+
+                inventory.Remove(inventoryId);
+                ui.RemoveUIItem(inventoryId);
+                return;
+            }
+        }
+        DropItem(inventoryId);
+    }
+    public void DropItem(string inventoryId)
+    {
+        if (!inventory.ContainsKey(inventoryId)) return;
+        Item item = inventory[inventoryId];
+        var droppedItem = Instantiate(droppedItemPrefab, transform.position, Quaternion.identity).GetComponent<DroppedItem>();
+
+        droppedItem.Initialize(item);
+        inventory.Remove(inventoryId);
+        ui.RemoveUIItem(inventoryId);
+        audioSource.PlayOneShot(dropItemAudio);
     }
     public bool RemoveItem(Item item)
     {

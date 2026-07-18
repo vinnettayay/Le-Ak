@@ -16,13 +16,15 @@ public class PlayerInputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab) && !inventoryOn)
         {
             inventoryOn = true;
-            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             inventoryUI.SetActive(true);
         }
         else if (Input.GetKeyDown(KeyCode.Tab) && inventoryOn)
         {
             inventoryOn = false;
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             inventoryUI.SetActive(false);
         }
     }
