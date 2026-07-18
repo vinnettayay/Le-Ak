@@ -157,7 +157,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
   displayName: Interact
+  interactionRadius: 2
   isEnabled: 1
+  ignoreInteraction: 0
   onInteract:
     m_PersistentCalls:
       m_Calls:
@@ -173,6 +175,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  outlineWidth: 15
 --- !u!114 &4035182826929468401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,6 +190,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupItemInteractable
   item: {fileID: 11400000, guid: 5e53337a84dfbe043b031b94b5dd3fc5, type: 2}
+  respawnAfterPickup: 1
+  respawnTime: 240
 --- !u!114 &8744600523287061705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +208,7 @@ MonoBehaviour:
   enabledPickupDelay: 0.2
   item: {fileID: 11400000, guid: 5e53337a84dfbe043b031b94b5dd3fc5, type: 2}
   pickedUp: 0
+  itemCollider: {fileID: 4406762425466161614}
 --- !u!1 &6374132453405354613
 GameObject:
   m_ObjectHideFlags: 0

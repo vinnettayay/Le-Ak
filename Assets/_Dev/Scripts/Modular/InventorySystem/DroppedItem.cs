@@ -10,27 +10,30 @@ public class DroppedItem : MonoBehaviour
 
     [Header("State")]
     public Item item;
-    public bool pickedUp = false;
+    public bool pickedUp;
 
+    [SerializeField] private Collider itemCollider;
+
+    private void Awake() 
+    {
+        itemCollider.GetComponent<Collider>();
+    }
     private void Start()
     {
-        if (autoStart && item != null)
-        {
-            Initialize(item);
-        }
+        if (autoStart && item != null) Initialize(item);
     }
     public void Initialize(Item item)
     {
         this.item = item;
-        Debug.Log(item.prefab.name);
         var droppedItem = Instantiate(item.prefab, transform);
 
         droppedItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        itemCollider.enabled = false;
         StartCoroutine(EnablePickup(enabledPickupDelay));
     }
     private IEnumerator EnablePickup(float  delay)
     {
         yield return new WaitForSeconds(delay);
-        GetComponent<Collider>().enabled = true;
+        itemCollider.enabled = true;
     }
 }

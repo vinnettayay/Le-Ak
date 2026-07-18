@@ -9,11 +9,13 @@ public class ItemUI : MonoBehaviour
     [SerializeField] private Image image;
     [SerializeField] private Button button;
 
-    public void Initialize(string inventoryId, Item item, Action<string> removeItemAction)
+    public void Initialize(string inventoryId, Item item, Action<string> useItemAction)
     {
         image.sprite = item.icon;
         transform.localScale = Vector3.one;
-        button.onClick.AddListener(() => removeItemAction.Invoke(inventoryId));
+
+        button.onClick.RemoveAllListeners();    
+        button.onClick.AddListener(() => {Debug.Log("ButtonClicked!"); useItemAction.Invoke(inventoryId);});
     }
     private void OnDestroy()
     {
