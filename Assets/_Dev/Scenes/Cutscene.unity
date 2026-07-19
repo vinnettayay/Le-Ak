@@ -420,7 +420,7 @@ MonoBehaviour:
   scene2Index: 1
   bgm: {fileID: 682054788}
   sceneManagement: {fileID: 682054786}
-  sceneName: Prototype
+  sceneName: Prototype_InventoryLayout
 --- !u!82 &682054788
 AudioSource:
   m_ObjectHideFlags: 0

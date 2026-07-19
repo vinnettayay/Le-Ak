@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3860e803843a4bb44b6be815ba6ae9b3, type: 3}
+  m_Name: Key
+  m_EditorClassIdentifier: Assembly-CSharp::Item
+  id: lk_key
+  description: Escape.
+  icon: {fileID: -752172240, guid: 511be8f10d294f24cbed8ecf965a87c4, type: 3}
+  prefab: {fileID: 2406847738445591342, guid: 61fad6da982ab5b4a9ca96d4f8cb6d34, type: 3}

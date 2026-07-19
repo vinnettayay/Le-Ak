@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.Rendering;
 
 public class InventoryUI : MonoBehaviour
@@ -12,19 +11,25 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Transform uiInventoryParent;
 
     [Header("State")]
-    [SerializeField] private SerializedDictionary<string, GameObject> inventoryUI = new();
-    public void AddUIItem(string inventoryId, Item item)
+    [SerializeField] private SerializedDictionary<string, ItemUI> inventoryUI = new();
+    public void AddUIItem(string inventoryId, Item item, int amount)
     {
-        var itemUI = Instantiate(uiItemPrefab).GetComponent<ItemUI>();
-        itemUI.transform.SetParent(uiInventoryParent, false);
-        inventoryUI.Add(inventoryId, itemUI.gameObject);
-        itemUI.Initialize(inventoryId, item, inventory.UseItem);
+        Debug.Log("AddUIItem called for: " + item.name);
+        var itemUI = Instantiate(uiItemPrefab, uiInventoryParent).GetComponent<ItemUI>();
+        Debug.Log("Instantiated: " + itemUI.name);
+        itemUI.Initialize(inventoryId, item, amount, inventory.UseItem);
+        inventoryUI.Add(inventoryId, itemUI);
+    }
+    public void UpdateAmount(string inventoryId, int amount)
+    {
+        Debug.Log("Inventory Updated!");
+        if (!inventoryUI.ContainsKey(inventoryId)) return;
+        inventoryUI[inventoryId].UpdateAmount(amount);
     }
     public void RemoveUIItem(string inventoryId)
     {
         if (!inventoryUI.ContainsKey(inventoryId)) return;
-        var itemUI = inventoryUI[inventoryId];
+        Destroy(inventoryUI[inventoryId].gameObject);
         inventoryUI.Remove(inventoryId);
-        Destroy(itemUI);
     }
 }
