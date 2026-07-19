@@ -1,8 +1,6 @@
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 using UnityEngine.Rendering;
-using Unity.VisualScripting;
 
 [RequireComponent(typeof(Collider))]
 public class Inventory : MonoBehaviour
@@ -24,47 +22,77 @@ public class Inventory : MonoBehaviour
     [SerializeField] private AudioClip pickUpItemAudio;
     [SerializeField] private AudioClip dropItemAudio;
 
-    [Header("State")]
-    [SerializeField] private SerializedDictionary<string, Item> inventory = new();
-
-    private void AddItem(Item item)
+    [Serializable]
+    public class InventoryEntry
     {
-        var inventoryId = Guid.NewGuid().ToString();
-        inventory.Add(inventoryId, item);
-        ui.AddUIItem(inventoryId, item);
+        public string inventoryId;
+        public Item item;
+        public int amount;
+
+        public InventoryEntry(Item item)
+        {
+            inventoryId = Guid.NewGuid().ToString();
+            this.item = item;
+            amount = 1;
+        }
     }
+
+    [Header("Inventory")]
+    [SerializeField] private SerializedDictionary<string, InventoryEntry> inventory = new();
+
+    // private void AddItem(Item item)
+    // {
+    //     var inventoryId = Guid.NewGuid().ToString();
+    //     inventory.Add(inventoryId, item);
+    //     ui.AddUIItem(inventoryId, item);
+    // }
     public void Pickup(Item item)
     {
-        var inventoryId = Guid.NewGuid().ToString();
-        inventory.Add(inventoryId, item);
-        ui.AddUIItem(inventoryId, item);
-        audioSource.PlayOneShot(pickUpItemAudio);
+        foreach(var pair in inventory)
+        {
+            if(pair.Value.item == item)
+            {
+                Debug.Log("Check conditions");
+                pair.Value.amount++;
+                ui.UpdateAmount(pair.Key, pair.Value.amount);
+                audioSource.PlayOneShot(pickUpItemAudio);
+                return;
+            }
+        }
+        InventoryEntry entry = new InventoryEntry(item);
+        inventory.Add(entry.inventoryId, entry);
+        ui.AddUIItem(entry.inventoryId, item, entry.amount);
+        audioSource.PlayOneShot(pickUpItemAudio);     
     }
     public bool HasItem(Item item)
     {
-        foreach (var inventoryItem in inventory.Values)
+        foreach (var pair in inventory)
         {
-            if (inventoryItem == item)
-            {
-                return true;
-            }
+            if (pair.Value.item == item) return true;
         }
         return false;
     }
     public void UseItem(string inventoryId)
     {
-        Debug.Log("UseItem Called!");
         if (!inventory.ContainsKey(inventoryId)) return;
         
-        Item item = inventory[inventoryId];
-        if (item == matchItem)
+        InventoryEntry entry = inventory[inventoryId];
+        if (entry.item == matchItem)
         {
             if (lantern.NeedsRefill)
             {
                 lantern.Refill();
+                entry.amount--;
 
-                inventory.Remove(inventoryId);
-                ui.RemoveUIItem(inventoryId);
+                if (entry.amount <= 0)
+                {
+                    inventory.Remove(inventoryId);
+                    ui.RemoveUIItem(inventoryId);   
+                }
+                else
+                {
+                    ui.UpdateAmount(inventoryId, entry.amount);
+                }
                 return;
             }
         }
@@ -73,31 +101,41 @@ public class Inventory : MonoBehaviour
     public void DropItem(string inventoryId)
     {
         if (!inventory.ContainsKey(inventoryId)) return;
-        Item item = inventory[inventoryId];
+        InventoryEntry entry = inventory[inventoryId];
         var droppedItem = Instantiate(droppedItemPrefab, transform.position, Quaternion.identity).GetComponent<DroppedItem>();
 
-        droppedItem.Initialize(item);
-        inventory.Remove(inventoryId);
-        ui.RemoveUIItem(inventoryId);
+        droppedItem.Initialize(entry.item);
+        entry.amount--;
+        if (entry.amount <= 0)
+        {
+            inventory.Remove(inventoryId);
+            ui.RemoveUIItem(inventoryId);   
+        }
+        else
+        {
+            ui.UpdateAmount(inventoryId, entry.amount);
+        }
         audioSource.PlayOneShot(dropItemAudio);
     }
     public bool RemoveItem(Item item)
     {
-        string removeId = null;
-
         foreach (var pair in inventory)
         {
-            if (pair.Value == item)
+            if (pair.Value.item == item)
             {
-                removeId = pair.Key;
-                break;
+                pair.Value.amount--;
+                if (pair.Value.amount <= 0)
+                {
+                    inventory.Remove(pair.Key);
+                    ui.RemoveUIItem(pair.Key);
+                }
+                else
+                {
+                    ui.UpdateAmount(pair.Key, pair.Value.amount);
+                }
+                return true;
             }
         }
-
-        if (removeId == null) return false;
-
-        inventory.Remove(removeId);
-        ui.RemoveUIItem(removeId);
-        return true;
+        return false;
     }
 }
