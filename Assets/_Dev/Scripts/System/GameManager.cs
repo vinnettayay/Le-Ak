@@ -6,6 +6,10 @@ using Unity.VisualScripting;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public bool interactionsLocked = true;
+    [SerializeField] private StoryEvent storyEvent;
+    [SerializeField] private StoryEvent gameStart;
+    [SerializeField] private GameObject enemy;
 
     [Header("Player")]
     [SerializeField] private Transform player;
@@ -41,6 +45,28 @@ public class GameManager : MonoBehaviour
         jumpscareImage.gameObject.SetActive(false);
 
         SetImageAlpha(blackFade, 0f);
+        LockInteractions();
+    }
+    public void UnlockInteractions()
+    {
+        interactionsLocked = false;
+    }
+    public void LockInteractions()
+    {
+        interactionsLocked = true;
+        enemy.SetActive(false);
+    }
+    public void FinishTutorial()
+    {
+        interactionsLocked = false;
+
+        if (enemy != null) enemy.SetActive(true);
+        StoryManager.Instance.TriggerEvent(gameStart);
+    }
+    public void ShowHideUI(GameObject uiGameObject)
+    {
+        if (!uiGameObject.activeInHierarchy) uiGameObject.SetActive(true);
+        else uiGameObject.SetActive(false); StoryManager.Instance.TriggerEvent(storyEvent);
     }
     public void PlayerCaught(EnemyAIBehaviour enemy)
     {
@@ -61,16 +87,13 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        Debug.Log("Jumpscare : Here we are");
         jumpscareImage.gameObject.SetActive(true);
         if (audioSource != null && jumpscareClip != null) audioSource.PlayOneShot(jumpscareClip);
 
         yield return new WaitForSeconds(jumpscareDuration);
-        Debug.Log("Jumpscare : Is at it");
         yield return StartCoroutine(Fade(0f, 1f));
 
         jumpscareImage.gameObject.SetActive(false);
-        Debug.Log("Jumpscare : Done");
 
         controller.enabled = false;
         player.position = currentCheckpoint.position;

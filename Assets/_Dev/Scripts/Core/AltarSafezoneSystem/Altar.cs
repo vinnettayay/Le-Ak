@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Altar : MonoBehaviour, IHoldInteractable
 {
+    [Header("Tutorial")]
+    [SerializeField] private bool isTutorialAltar = false;
+
     [Header("Offering")]
     [SerializeField] private Item requiredItem;
     [SerializeField] private Transform placePoint;
@@ -63,5 +66,10 @@ public class Altar : MonoBehaviour, IHoldInteractable
 
         Interactable interactable = GetComponent<Interactable>();
         if (interactable != null) interactable.SetInteractable(false);
+
+        if (isTutorialAltar)
+        {
+            GameManager.Instance.FinishTutorial();
+        }
     }
 }

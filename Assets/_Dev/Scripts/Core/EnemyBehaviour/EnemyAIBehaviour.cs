@@ -26,6 +26,9 @@ public class EnemyAIBehaviour : MonoBehaviour
     [SerializeField] private float patrolRadius = 15f;
     [SerializeField] private float patrolDelayTime = 2f;
 
+    [Header("Chase")]
+    [SerializeField] private GameObject chaseTriggerUI;
+
     [Header("Attack")]
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackCooldown = 1.5f;
@@ -148,6 +151,7 @@ public class EnemyAIBehaviour : MonoBehaviour
     }
     private void Chase()
     {
+        //StartCoroutine(ShowChaseTrigger());  IT KEEP BLINKING FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         agent.speed = chaseSpeed;
         agent.SetDestination(player.position);
     }
@@ -245,6 +249,12 @@ public class EnemyAIBehaviour : MonoBehaviour
         detection.PlayerVisible = false;
         yield return new WaitForSeconds(duration);
         ignoreDetection = false;
+    }
+    private IEnumerator ShowChaseTrigger()
+    {
+        chaseTriggerUI.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        chaseTriggerUI.SetActive(false);
     }
     private void OnDrawGizmosSelected()
     {
