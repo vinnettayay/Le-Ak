@@ -3,13 +3,19 @@ using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour, IInteractable
 {
+    [Header("Start of the Game")]
+    public bool ignoreInteractionLock = false;
+
+    [Header("Event Requirements")]
+    [Tooltip("Leave empty if this object can always be interacted with once gameplay is unlocked.")]
+    [SerializeField] private StoryEvent[] unlockAfterEvents;
+
     [Header("Interaction")]
     [SerializeField] private string displayName = "Interact";
     [SerializeField] private float interactionRadius = 2f;
     [SerializeField] private bool isEnabled = true;
     [SerializeField] private bool ignoreInteraction = false;
     [SerializeField] private UnityEvent onInteract;
-    //public bool CanInteract() => isEnabled;
 
     [Header("Outline")]
     private Outline outline;
@@ -34,6 +40,18 @@ public class Interactable : MonoBehaviour, IInteractable
     public bool CanInteract()
     {
         if (!isEnabled) return false;
+        if(ignoreInteraction) return false;
+        if (GameManager.Instance.interactionsLocked && !ignoreInteractionLock) return false;
+
+        if (unlockAfterEvents != null && unlockAfterEvents.Length > 0)
+        {
+            foreach (StoryEvent requiredEvent in unlockAfterEvents)
+            {
+                if (requiredEvent == null) continue;
+                if (!StoryManager.Instance.HasTriggered(requiredEvent)) return false;
+            }
+        }
+
         if (altar != null) return altar.CanPlace();
 
         return true;

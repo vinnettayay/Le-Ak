@@ -15,6 +15,9 @@ public class PlayerInteractor : MonoBehaviour
     void Update()
     {
         IInteractable nearest = FindNearestInteractable();
+
+        // Interactable currentInteractable = (nearest as MonoBehaviour)?.GetComponent<Interactable>();
+        // if (GameManager.Instance.interactionsLocked && currentInteractable != null && !currentInteractable.ignoreInteractionLock) return;
         UpdateFocus(nearest);
 
         if (focused == null)
@@ -57,6 +60,7 @@ public class PlayerInteractor : MonoBehaviour
             if (!interactable.CanInteract()) continue;
 
             float distSq = (transform.position - col.transform.position).sqrMagnitude;
+            if (distSq > interactableComponent.InteractionRadius * interactableComponent.InteractionRadius) continue;
             if (distSq < bestDistSq)
             {
                 bestDistSq = distSq;
