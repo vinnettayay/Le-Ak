@@ -138,4 +138,12 @@ public class Inventory : MonoBehaviour
         }
         return false;
     }
+    public int GetItemAmount(Item item)
+    {
+        foreach ( var pair in inventory)
+        {
+            if (pair.Value.item == item) return pair.Value.amount;
+        }
+        return 0;
+    }
 }
