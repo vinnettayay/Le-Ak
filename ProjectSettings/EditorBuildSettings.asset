@@ -6,11 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Dev/Scenes/MainMenu.unity
+    guid: 281f8f15d67973e4788941fd64dba1c1
+  - enabled: 1
     path: Assets/_Dev/Scenes/Cutscene.unity
     guid: 2ae4a585ecdaddf4dbb112b6ac029cc7
   - enabled: 1
-    path: Assets/_Dev/Scenes/Prototype_InventoryLayout.unity
-    guid: 3e27ec56e34873e43a6b4e7a2a013a43
+    path: Assets/_Dev/Scenes/Prototype_AddVFXAUD.unity
+    guid: 6382e2a7019208645b9647eadecb2a71
+  - enabled: 1
+    path: Assets/_Dev/Scenes/CreditScene.unity
+    guid: 49140214a50f5304096b2a95ae66b64f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
