@@ -5,6 +5,15 @@ using TMPro;
 
 public class StoryManager : MonoBehaviour
 {
+    [Header("Gate Progress")]
+    [SerializeField] private int requiredStatues = 4;
+    private int statuesPlaced = 0;
+    public bool GateUnsealed { get; private set; }
+    public int StatuesPlaced => statuesPlaced;
+    public int RequiredStatues => requiredStatues;
+    public delegate void GateDelegate();
+    public event GateDelegate OnGateUnsealed;
+
     public static StoryManager Instance;
     private HashSet<StoryEvent> completedEvents = new HashSet<StoryEvent>();
     [SerializeField] private TextMeshProUGUI objectiveText;
@@ -65,5 +74,15 @@ public class StoryManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         TriggerEvent(nextEvent);
+    }
+    public void AddStatue()
+    {
+        if (GateUnsealed) return;
+        statuesPlaced++;
+        if (statuesPlaced >= requiredStatues)
+        {
+            GateUnsealed = true;
+            OnGateUnsealed?.Invoke();
+        }
     }
 }
