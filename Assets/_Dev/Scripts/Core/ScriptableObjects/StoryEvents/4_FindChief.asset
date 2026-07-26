@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2162401ef3291234ba13b827d21f6d87, type: 3}
   m_Name: 4_FindChief
   m_EditorClassIdentifier: Assembly-CSharp::StoryEvent
-  eventName: Go To Chief
+  eventName: Go To Chief in Quail
   description: 
   requiredEvents:
   - {fileID: 11400000, guid: 73d507f0a0bf0ab4d951aa2a2a69d04e, type: 2}

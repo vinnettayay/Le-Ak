@@ -13,9 +13,6 @@ GameObject:
   - component: {fileID: 1495666687010667979}
   - component: {fileID: 4406762425466161614}
   - component: {fileID: 7695655097641436350}
-  - component: {fileID: 4236308180228644918}
-  - component: {fileID: 4035182826929468401}
-  - component: {fileID: 8744600523287061705}
   m_Layer: 0
   m_Name: Matches
   m_TagString: DroppedItem
@@ -33,10 +30,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.38212, y: 0.63, z: -1.58329}
-  m_LocalScale: {x: 0.5, y: 0.2, z: 0.4}
+  m_LocalScale: {x: 0.24544, y: 0.098176, z: 0.196352}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3836651945814367647}
+  - {fileID: 499327289062733253}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2029310592736994186
@@ -115,8 +113,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.50340366, y: 7.8422256, z: 1}
+  m_Center: {x: -0.14134383, y: -0.44233024, z: 0}
 --- !u!54 &7695655097641436350
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -144,71 +142,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4236308180228644918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1605170979430395843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad4a2d07bce416f48b9740509771c831, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Interactable
-  displayName: Pickup
-  interactionRadius: 2
-  isEnabled: 1
-  ignoreInteraction: 0
-  onInteract:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4035182826929468401}
-        m_TargetAssemblyTypeName: PickupItemInteractable, Assembly-CSharp
-        m_MethodName: Pickup
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  outlineWidth: 15
---- !u!114 &4035182826929468401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1605170979430395843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44854301a91692242bbabb898e5bd1a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PickupItemInteractable
-  item: {fileID: 11400000, guid: 5e53337a84dfbe043b031b94b5dd3fc5, type: 2}
-  respawnAfterPickup: 1
-  respawnTime: 240
---- !u!114 &8744600523287061705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1605170979430395843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61f7d3bfc078a4341b56b58bfa02123e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DroppedItem
-  autoStart: 0
-  enabledPickupDelay: 0.2
-  item: {fileID: 11400000, guid: 5e53337a84dfbe043b031b94b5dd3fc5, type: 2}
-  pickedUp: 0
-  itemCollider: {fileID: 4406762425466161614}
 --- !u!1 &6374132453405354613
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,7 +186,7 @@ Light:
   serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 0.62402916, b: 0.25471687, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -336,3 +269,215 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1001 &101136358285988398
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 84953421248519410}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8132827
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.033207
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0166035
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 30.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6722085885383957590, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_Range
+      value: 2.7743673
+      objectReference: {fileID: 0}
+    - target: {fileID: -6722085885383957590, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_Color.b
+      value: 0.43255958
+      objectReference: {fileID: 0}
+    - target: {fileID: -6722085885383957590, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_Color.g
+      value: 0.7605894
+      objectReference: {fileID: 0}
+    - target: {fileID: -6722085885383957590, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_Color.r
+      value: 0.9924528
+      objectReference: {fileID: 0}
+    - target: {fileID: -6722085885383957590, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_Intensity
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -447275898630060098, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -447275898630060098, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -447275898630060098, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      propertyPath: m_Name
+      value: Korek
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: 65702495048144492, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6960275010025169076}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7472236936442160226}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3211199814032653713}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7550545082972686064}
+  m_SourcePrefab: {fileID: 100100000, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+--- !u!4 &499327289062733253 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+  m_PrefabInstance: {fileID: 101136358285988398}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &983516632142737279 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9a6fedcb3cd990d4dac7763364fe1808, type: 3}
+  m_PrefabInstance: {fileID: 101136358285988398}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6960275010025169076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983516632142737279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad4a2d07bce416f48b9740509771c831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  ignoreInteractionLock: 0
+  unlockAfterEvents: []
+  displayName: Pickup
+  interactionRadius: 5
+  isEnabled: 1
+  ignoreInteraction: 0
+  onInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7472236936442160226}
+        m_TargetAssemblyTypeName: PickupItemInteractable, Assembly-CSharp
+        m_MethodName: Pickup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  outlineWidth: 15
+--- !u!114 &7472236936442160226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983516632142737279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44854301a91692242bbabb898e5bd1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickupItemInteractable
+  item: {fileID: 11400000, guid: 5e53337a84dfbe043b031b94b5dd3fc5, type: 2}
+  respawnAfterPickup: 1
+  respawnTime: 240
+--- !u!65 &3211199814032653713
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983516632142737279}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5501818, y: 3.709297, z: 1.2254076}
+  m_Center: {x: -0.22490908, y: -0.12022495, z: 0.010383652}
+--- !u!114 &7550545082972686064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983516632142737279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61f7d3bfc078a4341b56b58bfa02123e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DroppedItem
+  autoStart: 0
+  enabledPickupDelay: 0.2
+  item: {fileID: 11400000, guid: 5e53337a84dfbe043b031b94b5dd3fc5, type: 2}
+  pickedUp: 0
+  itemCollider: {fileID: 4406762425466161614}

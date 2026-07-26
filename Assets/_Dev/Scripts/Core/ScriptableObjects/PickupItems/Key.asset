@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Item
   id: lk_key
   description: Escape.
-  icon: {fileID: -752172240, guid: 511be8f10d294f24cbed8ecf965a87c4, type: 3}
+  icon: {fileID: -2123451334, guid: 186bc11e76047f64ca3e228f204929c1, type: 3}
   prefab: {fileID: 2406847738445591342, guid: 61fad6da982ab5b4a9ca96d4f8cb6d34, type: 3}

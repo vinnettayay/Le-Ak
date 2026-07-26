@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class Altar : MonoBehaviour, IHoldInteractable
 {
+    [Header("Particle System")]
+    [SerializeField] private ParticleSystem activationParticle;
+    [SerializeField] private ParticleSystem activeParticle;
+    [SerializeField] private Transform effectSpawnPos;
+
     [Header("Tutorial")]
     [SerializeField] private bool isTutorialAltar = false;
 
@@ -32,6 +37,7 @@ public class Altar : MonoBehaviour, IHoldInteractable
         thisColl = GetComponent<Collider>();
         thisColl.enabled = true;
         
+        effectSpawnPos = safezoneArea.transform;
     }
     public bool CanPlace()
     {
@@ -57,10 +63,20 @@ public class Altar : MonoBehaviour, IHoldInteractable
     {
         if (prayCompleted) return;
 
-        Debug.Log("Pray Finished");
         prayCompleted = true;
         safezoneArea.enabled = true;
         safezoneArea.tag = "Safezone";
+
+        Transform spawnPoint = effectSpawnPos != null ? effectSpawnPos : transform;
+        if (activationParticle != null)
+        {
+            ParticleSystem activation = Instantiate(activationParticle, spawnPoint.position, Quaternion.Euler(-90f, 0f, 0f));
+            Destroy(activation.gameObject, activation.main.duration + activation.main.startLifetime.constantMax + 0.5f);
+        }
+        if (activeParticle != null)
+        {
+            Instantiate(activeParticle, spawnPoint.position, Quaternion.Euler(-90f, 0f, 0f));
+        }
 
         if (GameManager.Instance != null) GameManager.Instance.SetCheckpoint(respawnPoint);
 

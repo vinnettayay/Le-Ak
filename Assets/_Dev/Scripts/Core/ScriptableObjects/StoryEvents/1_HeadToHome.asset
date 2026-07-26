@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2162401ef3291234ba13b827d21f6d87, type: 3}
   m_Name: 1_HeadToHome
   m_EditorClassIdentifier: Assembly-CSharp::StoryEvent
-  eventName: Head Home
+  eventName: Head Home.
   description: 
+  requiredEvents: []
   hasDialogue: 1
   dialogue: '"Why do this place feel quieter..?"'
   dialogueDuration: 3
   textColor: {r: 1, g: 1, b: 1, a: 1}
+  nextEvent: {fileID: 0}
+  nextEventDelay: 0

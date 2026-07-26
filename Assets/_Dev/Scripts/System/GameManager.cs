@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using Unity.VisualScripting;
+using UnityEngine.Video;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Image blackFade;
-    [SerializeField] private Image jumpscareImage;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -33,6 +32,10 @@ public class GameManager : MonoBehaviour
     [Header("Timing")]
     [SerializeField] private float jumpscareDuration = 2f;
     [SerializeField] private float fadeSpeed = 2f;
+
+    [Header("Jumpscare Video")]
+    [SerializeField] private GameObject jumpscarePanel;
+    [SerializeField] private VideoPlayer jumpscareVideo;
     private bool gameOver;
     private void Awake() 
     {
@@ -42,7 +45,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         blackFade.gameObject.SetActive(true);
-        jumpscareImage.gameObject.SetActive(false);
+        jumpscarePanel.gameObject.SetActive(false);
 
         SetImageAlpha(blackFade, 0f);
         LockInteractions();
@@ -77,7 +80,6 @@ public class GameManager : MonoBehaviour
     public void SetCheckpoint(Transform checkpoint)
     {
         currentCheckpoint = checkpoint;
-        Debug.Log("Checkpoint Updated : " + checkpoint.name);
     }
     private IEnumerator GameOverRoutine(EnemyAIBehaviour enemy)
     {
@@ -87,13 +89,22 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        jumpscareImage.gameObject.SetActive(true);
+        jumpscarePanel.SetActive(true);
         if (audioSource != null && jumpscareClip != null) audioSource.PlayOneShot(jumpscareClip);
 
-        yield return new WaitForSeconds(jumpscareDuration);
+        jumpscareVideo.Stop();
+        jumpscareVideo.Play();
+
+        Debug.Log("Is Prepared: " + jumpscareVideo.isPrepared);
+        Debug.Log("Is Playing: " + jumpscareVideo.isPlaying);
+        Debug.Log("Frame: " + jumpscareVideo.frame);
+
+        yield return new WaitUntil(() => jumpscareVideo.isPlaying);
+        yield return new WaitUntil(() => !jumpscareVideo.isPlaying);
+
         yield return StartCoroutine(Fade(0f, 1f));
 
-        jumpscareImage.gameObject.SetActive(false);
+        jumpscarePanel.gameObject.SetActive(false);
 
         controller.enabled = false;
         player.position = currentCheckpoint.position;

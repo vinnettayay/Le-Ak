@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Item
   id: lk_statue
   description: Can be used to open something..?
-  icon: {fileID: 829522426, guid: 96c1e1cf5fc229e408efb83100b1f8ec, type: 3}
+  icon: {fileID: 1540226804, guid: ad949242712e11248b5858116afe96ef, type: 3}
   prefab: {fileID: 7243181988825171260, guid: e88ddd0aa2cdcba438566e689a6f3037, type: 3}

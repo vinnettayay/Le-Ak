@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Item
   id: lk_sesajen
   description: Pray to feel safe.
-  icon: {fileID: -741640307, guid: 1c4162b3d6b6a8443a4ce94f67ec4487, type: 3}
-  prefab: {fileID: 7143459461313535538, guid: 6225516d7fb6bcd4280c8f58ef38fee5, type: 3}
+  icon: {fileID: -1273027865, guid: f6f0264d263699449af5ec1377ee860e, type: 3}
+  prefab: {fileID: 5013458370516420294, guid: 37770adb5691d4444a0b4c101baa7886, type: 3}

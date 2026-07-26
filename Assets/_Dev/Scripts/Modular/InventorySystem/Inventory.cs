@@ -39,20 +39,12 @@ public class Inventory : MonoBehaviour
 
     [Header("Inventory")]
     [SerializeField] private SerializedDictionary<string, InventoryEntry> inventory = new();
-
-    // private void AddItem(Item item)
-    // {
-    //     var inventoryId = Guid.NewGuid().ToString();
-    //     inventory.Add(inventoryId, item);
-    //     ui.AddUIItem(inventoryId, item);
-    // }
     public void Pickup(Item item)
     {
         foreach(var pair in inventory)
         {
             if(pair.Value.item == item)
             {
-                Debug.Log("Check conditions");
                 pair.Value.amount++;
                 ui.UpdateAmount(pair.Key, pair.Value.amount);
                 audioSource.PlayOneShot(pickUpItemAudio);

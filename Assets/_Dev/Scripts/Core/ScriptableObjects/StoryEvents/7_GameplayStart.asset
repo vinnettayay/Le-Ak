@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2162401ef3291234ba13b827d21f6d87, type: 3}
   m_Name: 7_GameplayStart
   m_EditorClassIdentifier: Assembly-CSharp::StoryEvent
-  eventName: Escape to the main gate
+  eventName: Escape to the main gate.
   description: 
   requiredEvents:
   - {fileID: 11400000, guid: 5d31ab8e1f1341449ae0bdf5fc60375a, type: 2}
@@ -20,3 +20,5 @@ MonoBehaviour:
   dialogue: '"I guess the back gate has been locked."'
   dialogueDuration: 3
   textColor: {r: 0.4264151, g: 0, b: 0, a: 1}
+  nextEvent: {fileID: 0}
+  nextEventDelay: 0

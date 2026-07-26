@@ -26,15 +26,12 @@ public class DialogueUI : MonoBehaviour
     }
     public void ShowDialogue(string message, float duration)
     {
-        Debug.Log("ShowDialogue called: " + message);
-
         if (dialogueRoutine != null) StopCoroutine(dialogueRoutine);
     
         dialogueRoutine = StartCoroutine(DialogueRoutine(message, duration));
     }
     private IEnumerator DialogueRoutine(string message, float duration)
     {
-        Debug.Log("DialogueRoutine started");
         canvasGroup.blocksRaycasts = true;
         dialogueText.text = message;
 

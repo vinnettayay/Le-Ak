@@ -44,7 +44,6 @@ public class MainGateController : MonoBehaviour
     }
     public void InteractGate()
     {
-        Debug.Log("Can escape?" + escaped);
         if (escaped) return;
         if (!StoryManager.Instance.GateUnsealed)
         {
@@ -58,7 +57,6 @@ public class MainGateController : MonoBehaviour
         }
         if (!inventory.HasItem(gateKey))
         {
-            Debug.Log("Need Key"); 
             return;
         }    
 
@@ -69,7 +67,6 @@ public class MainGateController : MonoBehaviour
         {
             //LoadScene
             StartCoroutine(Escaped());
-            Debug.Log("You escaped :)");
         }
     }
     private IEnumerator Escaped()

@@ -15,8 +15,10 @@ MonoBehaviour:
   eventName: Find any information
   description: 
   requiredEvents:
-  - {fileID: 11400000, guid: a369591e34671994faf9fa9859a96811, type: 2}
+  - {fileID: 11400000, guid: 73d507f0a0bf0ab4d951aa2a2a69d04e, type: 2}
   hasDialogue: 0
   dialogue: 
   dialogueDuration: 3
   textColor: {r: 1, g: 1, b: 1, a: 1}
+  nextEvent: {fileID: 0}
+  nextEventDelay: 0

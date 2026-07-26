@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Item
   id: lk_matches
   description: Lights guide through the dark
-  icon: {fileID: -800514987, guid: b958f4a62555dc449b16a39067bbd9ac, type: 3}
+  icon: {fileID: 1586273325, guid: 450b0e4a34e38cc4bb16eb4f2f977e04, type: 3}
   prefab: {fileID: 1605170979430395843, guid: 911891b7dde30f14db8c8b830c6b1c61, type: 3}

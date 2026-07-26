@@ -28,6 +28,10 @@ public class EnemyAIBehaviour : MonoBehaviour
 
     [Header("Chase")]
     [SerializeField] private GameObject chaseTriggerUI;
+    [SerializeField] private GameObject chaseEffect;
+    [SerializeField] private CanvasGroup chaseCanvasGroup;
+    [SerializeField] private float chaseFadeTime = 0.8f;
+    [SerializeField] private float chaseStayTime = 0.3f;
 
     [Header("Attack")]
     [SerializeField] private float attackRange = 2f;
@@ -38,6 +42,11 @@ public class EnemyAIBehaviour : MonoBehaviour
 
     [Header("Stunned")]
     [SerializeField] private float stunDuration = 3f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource loopSource;
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioClip sightSFX;
 
     [SerializeField]
     private EnemyState enemyState;
@@ -104,6 +113,12 @@ public class EnemyAIBehaviour : MonoBehaviour
     }
     private void ChangeState(EnemyState newState)
     {
+        if (enemyState == newState) return;
+        if ((enemyState == EnemyState.Chase || enemyState == EnemyState.Attack) && newState != EnemyState.Chase && newState != EnemyState.Attack)
+        {
+            if (loopSource != null && loopSource.isPlaying) loopSource.Stop();
+        }
+
         enemyState = newState;
 
         switch (newState)
@@ -114,6 +129,11 @@ public class EnemyAIBehaviour : MonoBehaviour
                 break;
             case EnemyState.Search : 
                 searchTimer = 0f;
+                break;
+            case EnemyState.Chase : 
+                if (loopSource != null && !loopSource.isPlaying) loopSource.Play();
+
+                StartCoroutine(ShowChaseEffect());
                 break;
         }
         Debug.Log("CurrentState : " + enemyState);
@@ -147,11 +167,16 @@ public class EnemyAIBehaviour : MonoBehaviour
         {
             patrolPoint = hit.position;
             patrolPointSet = true;
+            Debug.Log("New Patrol Point " + patrolPoint);
+        }
+        else
+        {
+            Debug.Log("Failed To find patrol point");
         }
     }
     private void Chase()
     {
-        //StartCoroutine(ShowChaseTrigger());  IT KEEP BLINKING FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
         agent.speed = chaseSpeed;
         agent.SetDestination(player.position);
     }
@@ -250,11 +275,25 @@ public class EnemyAIBehaviour : MonoBehaviour
         yield return new WaitForSeconds(duration);
         ignoreDetection = false;
     }
-    private IEnumerator ShowChaseTrigger()
+    private IEnumerator ShowChaseEffect()
     {
-        chaseTriggerUI.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        chaseTriggerUI.SetActive(false);
+        if (sfxSource != null && sightSFX != null) sfxSource.PlayOneShot(sightSFX);
+
+        if (chaseEffect == null || chaseCanvasGroup == null) yield break;
+
+        chaseEffect.SetActive(true);
+        chaseCanvasGroup.alpha = 1f;
+        yield return new WaitForSeconds(chaseStayTime);
+
+        float t = 0;
+        while (t < chaseFadeTime)
+        {
+            t += Time.deltaTime;
+            chaseCanvasGroup.alpha = Mathf.Lerp(1f, 0f, t / chaseFadeTime);
+            yield return null;
+        }
+        chaseCanvasGroup.alpha = 0f;
+        chaseEffect.SetActive(false);
     }
     private void OnDrawGizmosSelected()
     {
